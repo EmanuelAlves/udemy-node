@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -16,6 +18,14 @@ app.use((req, res, next) => {
 });
 
 app.use('/feed', feedRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode;
+    const message = error.message;
+    res.status(status).join({message: message});
+});
+
 
 mongoose.connect('')
 .then( () => {
